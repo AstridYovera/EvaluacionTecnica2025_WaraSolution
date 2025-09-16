@@ -1,0 +1,684 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>WARA – Salas disponibles</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg1: #eef2f7;
+            --bg2: #f7f9fc;
+            --card: #ffffff;
+            --primary: #4a90e2;
+            --primary-600: #377fd0;
+            --text: #273244;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --success: #16a34a;
+            --danger: #ef4444;
+            --badge: #e9eef7;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: "Poppins",sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: radial-gradient(1200px 800px at -10% -10%, var(--bg1), transparent 60%), radial-gradient(1200px 800px at 110% -10%, var(--bg1), transparent 60%), var(--bg2);
+            color: var(--text);
+        }
+
+        .page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px 16px 64px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: .2px;
+        }
+
+        .btn {
+            border: none;
+            background: var(--primary);
+            color: #fff;
+            padding: .75rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: .2s;
+        }
+
+            .btn:hover {
+                background: var(--primary-600);
+            }
+
+            .btn.outline {
+                background: transparent;
+                color: var(--primary);
+                border: 1px solid var(--primary);
+            }
+
+            .btn.small {
+                padding: .5rem .8rem;
+                font-size: .9rem;
+            }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 8px 24px rgba(16,24,40,.06);
+            margin-bottom: 18px;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(12,1fr);
+            gap: 12px;
+            align-items: end;
+        }
+
+            .filters .field {
+                grid-column: span 3;
+                min-width: 160px;
+            }
+
+                .filters .field.long {
+                    grid-column: span 4;
+                }
+
+            .filters label {
+                display: block;
+                font-size: .9rem;
+                color: var(--muted);
+                margin-bottom: 6px;
+            }
+
+            .filters input, .filters select {
+                width: 100%;
+                padding: .6rem .75rem;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                background: #fff;
+                outline: none;
+                transition: border .15s, box-shadow .15s;
+            }
+
+                .filters input:focus, .filters select:focus {
+                    border-color: var(--primary);
+                    box-shadow: 0 0 0 4px rgba(74,144,226,.12);
+                }
+
+        .table-wrap {
+            overflow: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: #fff;
+        }
+
+        thead th {
+            background: #f5f7fb;
+            color: #475569;
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: .95rem;
+        }
+
+        tbody td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+            font-size: .95rem;
+            transition: background-color .35s ease, opacity .25s ease, box-shadow .25s ease;
+        }
+
+        tbody tr {
+            transition: opacity .25s ease, background-color .35s ease;
+        }
+
+            tbody tr:hover {
+                background: #fafcff;
+            }
+
+        .right {
+            text-align: right;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: .25rem .55rem;
+            border-radius: 999px;
+            font-size: .85rem;
+            font-weight: 600;
+            background: var(--badge);
+            color: var(--primary-600);
+            transition: background-color .35s ease, color .35s ease, box-shadow .25s ease;
+        }
+
+            .badge.success {
+                background: #eafaf0;
+                color: var(--success);
+            }
+
+            .badge.danger {
+                background: #fdecec;
+                color: var(--danger);
+            }
+
+        .empty {
+            text-align: center;
+            color: #6b7280;
+            padding: 18px 0;
+        }
+
+        h3 {
+            margin: 8px 0 12px;
+            font-size: 1.2rem;
+        }
+
+        .reserve {
+            display: grid;
+            grid-template-columns: repeat(12,1fr);
+            gap: 12px;
+            align-items: end;
+        }
+
+            .reserve .field {
+                grid-column: span 3;
+                min-width: 160px;
+            }
+
+                .reserve .field.wide {
+                    grid-column: span 6;
+                }
+
+            .reserve label {
+                display: block;
+                font-size: .9rem;
+                color: var(--muted);
+                margin-bottom: 6px;
+            }
+
+            .reserve input {
+                width: 100%;
+                padding: .6rem .75rem;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                outline: none;
+                transition: border .15s, box-shadow .15s;
+                background: #fff;
+            }
+
+                .reserve input:focus {
+                    border-color: var(--primary);
+                    box-shadow: 0 0 0 4px rgba(74,144,226,.12);
+                }
+
+        .error-text {
+            color: var(--danger);
+            font-size: .85rem;
+            margin-top: 4px;
+            min-height: 1em;
+        }
+
+        .toast {
+            position: fixed;
+            right: 16px;
+            bottom: 16px;
+            background: #111827;
+            color: #fff;
+            padding: 12px 14px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(16,24,40,.2);
+            opacity: 0;
+            transform: translateY(8px);
+            transition: .25s;
+        }
+
+            .toast.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .toast.success {
+                background: #15803d;
+            }
+
+            .toast.error {
+                background: #b91c1c;
+            }
+
+        .tr-enter {
+            opacity: 0;
+        }
+
+        .tr-enter-active {
+            opacity: 1;
+        }
+
+        .td-changed {
+            box-shadow: inset 0 0 0 9999px rgba(74,144,226,.10);
+        }
+
+        .td-changed-done {
+            box-shadow: none;
+            transition: box-shadow .8s ease;
+        }
+
+        @media (max-width: 920px) {
+            .filters .field {
+                grid-column: span 6;
+            }
+
+                .filters .field.long {
+                    grid-column: span 6;
+                }
+
+            .reserve .field {
+                grid-column: span 6;
+            }
+
+                .reserve .field.wide {
+                    grid-column: span 12;
+                }
+        }
+
+        @media (max-width: 620px) {
+            .filters .field, .filters .field.long, .reserve .field, .reserve .field.wide {
+                grid-column: span 12;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <div class="topbar">
+            <h2>Salas disponibles</h2>
+            <button class="btn outline small" onclick="logout()">Salir</button>
+        </div>
+
+        <div class="card">
+            <div class="filters">
+                <div class="field">
+                    <label>Capacidad mínima</label>
+                    <input type="number" id="capMin" min="0" />
+                </div>
+                <div class="field">
+                    <label>Estado</label>
+                    <select id="estado">
+                        <option value="">(Todos)</option>
+                        <option>Disponible</option>
+                        <option>Ocupada</option>
+                    </select>
+                </div>
+                <div class="field long">
+                    <label>En fecha/hora</label>
+                    <input type="datetime-local" id="at" />
+                </div>
+                <div class="field">
+                    <button class="btn" onclick="manualSearch()">Buscar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card table-wrap">
+            <table id="tbl">
+                <thead>
+                    <tr>
+                        <th style="width:70px;">Id</th>
+                        <th>Nombre</th>
+                        <th style="width:140px;">Capacidad</th>
+                        <th style="width:140px;">Estado</th>
+                        <th class="right" style="width:120px;">Acción</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h3>Nueva reserva</h3>
+            <div class="reserve">
+                <div class="field">
+                    <label>Sala</label>
+                    <input id="roomId" type="number" min="1" required />
+                    <div id="err-roomId" class="error-text"></div>
+                </div>
+                <div class="field">
+                    <label>Fecha</label>
+                    <input id="date" type="date" required />
+                    <div id="err-date" class="error-text"></div>
+                </div>
+                <div class="field">
+                    <label>Inicio</label>
+                    <input id="start" type="time" required />
+                    <div id="err-start" class="error-text"></div>
+                </div>
+                <div class="field">
+                    <label>Fin</label>
+                    <input id="end" type="time" required />
+                    <div id="err-end" class="error-text"></div>
+                </div>
+                <div class="field wide">
+                    <label>Motivo</label>
+                    <input id="purpose" required />
+                    <div id="err-purpose" class="error-text"></div>
+                </div>
+                <div class="field">
+                    <button id="btnReserve" class="btn" onclick="reserve()">Reservar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+    <script>
+        function showToast(text, type = 'success') {
+            const t = document.getElementById('toast');
+            t.textContent = text;
+            t.className = 'toast ' + type + ' show';
+            setTimeout(() => t.classList.remove('show'), 2200);
+        }
+
+        async function logout() {
+            try { await apiPost('/api/auth/logout', {}); } catch { }
+            clearToken();
+            location.href = 'login.html';
+        }
+
+        function prefill(id) { document.getElementById('roomId').value = id; }
+
+        function clearErrors() {
+            for (const id of ['roomId', 'date', 'start', 'end', 'purpose']) {
+                const el = document.getElementById('err-' + id);
+                if (el) el.textContent = '';
+            }
+        }
+
+        function setLoading(isLoading) {
+            const btn = document.getElementById('btnReserve');
+            btn.disabled = isLoading;
+            btn.textContent = isLoading ? 'Reservando...' : 'Reservar';
+        }
+
+        let roomsState = new Map();
+        let refreshTimer = null;
+        const REFRESH_MS = 500;
+        let isTicking = false;
+        let userInteracting = false;
+
+        function badgeHtml(status) {
+            const cls = (status?.toLowerCase() === 'ocupada') ? 'badge danger' : 'badge success';
+            return `<span class="${cls}">${status}</span>`;
+        }
+
+        function patchCell(td, newValue) {
+            if (td.textContent === newValue) return;
+            td.textContent = newValue;
+            td.classList.remove('td-changed-done');
+            td.classList.add('td-changed');
+            setTimeout(() => {
+                td.classList.add('td-changed-done');
+                td.classList.remove('td-changed');
+            }, 60);
+        }
+
+        function patchCellHtml(td, newHtml) {
+            if (td.innerHTML === newHtml) return;
+            td.innerHTML = newHtml;
+            td.classList.remove('td-changed-done');
+            td.classList.add('td-changed');
+            setTimeout(() => {
+                td.classList.add('td-changed-done');
+                td.classList.remove('td-changed');
+            }, 60);
+        }
+
+        function createRow(r) {
+            const tr = document.createElement('tr');
+            tr.dataset.id = r.id;
+            tr.classList.add('tr-enter');
+            tr.innerHTML = `
+                            <td data-k="id">${r.id}</td>
+                            <td data-k="name">${r.name}</td>
+                            <td data-k="capacity">${r.capacity}</td>
+                            <td data-k="status">${badgeHtml(r.status)}</td>
+                            <td class="right" data-k="action"><button class="btn small" onclick="prefill(${r.id})">Usar</button></td>
+                        `;
+            requestAnimationFrame(() => {
+                tr.classList.add('tr-enter-active');
+                tr.classList.remove('tr-enter');
+            });
+            return tr;
+        }
+
+        function diffRender(newRooms) {
+            const tbody = document.querySelector('#tbl tbody');
+            const newMap = new Map(newRooms.map(r => [String(r.id), r]));
+
+            for (const r of newRooms) {
+                const id = String(r.id);
+                let tr = tbody.querySelector(`tr[data-id="${id}"]`);
+                if (!tr) {
+                    tbody.appendChild(createRow(r));
+                } else {
+                    patchCell(tr.querySelector('td[data-k="name"]'), String(r.name));
+                    patchCell(tr.querySelector('td[data-k="capacity"]'), String(r.capacity));
+                    patchCellHtml(tr.querySelector('td[data-k="status"]'), badgeHtml(r.status));
+                }
+            }
+
+            tbody.querySelectorAll('tr').forEach(tr => {
+                const id = tr.dataset.id;
+                if (!newMap.has(id)) {
+                    tr.style.opacity = '0';
+                    setTimeout(() => tr.remove(), 250);
+                }
+            });
+
+            const orderIds = newRooms.map(r => String(r.id));
+            orderIds.forEach((id, idx) => {
+                const row = tbody.querySelector(`tr[data-id="${id}"]`);
+                if (row && tbody.children[idx] !== row) {
+                    tbody.insertBefore(row, tbody.children[idx] || null);
+                }
+            });
+
+            roomsState = newMap;
+        }
+
+        async function loadRoomsSilent() {
+            const p = new URLSearchParams();
+            const cap = document.getElementById('capMin').value;
+            const st = document.getElementById('estado').value;
+            const at = document.getElementById('at').value;
+
+            if (cap) p.append('capacityMin', cap);
+            if (st) p.append('status', st);
+
+            const atIso = at ? new Date(at).toISOString() : new Date().toISOString();
+            p.append('at', atIso);
+
+            let rooms;
+            try {
+                rooms = await apiGet(api.rooms + `?${p.toString()}`);
+            } catch (err) {
+                if (roomsState.size === 0) showEmptyRow(err?.error || 'Error al cargar salas');
+                return;
+            }
+
+            if (!Array.isArray(rooms) && Array.isArray(rooms?.data)) rooms = rooms.data;
+            if (!Array.isArray(rooms)) rooms = [];
+
+            const tb = document.querySelector('#tbl tbody');
+            const empty = tb.querySelector('.empty-row');
+            if (empty) empty.remove();
+
+            if (rooms.length === 0) {
+                diffRender([]);
+                showEmptyRow();
+                return;
+            }
+
+            diffRender(rooms);
+        }
+
+        async function manualSearch() {
+            const prev = userInteracting;
+            userInteracting = false;
+            try {
+                await loadRoomsSilent();
+            } finally {
+                userInteracting = prev;
+            }
+        }
+
+        function startSilentAutoRefresh() {
+            stopSilentAutoRefresh();
+            const tick = async () => {
+                if (userInteracting || document.hidden) {
+                    refreshTimer = setTimeout(tick, REFRESH_MS);
+                    return;
+                }
+                if (isTicking) { refreshTimer = setTimeout(tick, REFRESH_MS); return; }
+                isTicking = true;
+                try { await loadRoomsSilent(); }
+                finally { isTicking = false; refreshTimer = setTimeout(tick, REFRESH_MS); }
+            };
+            tick();
+        }
+
+        function stopSilentAutoRefresh() {
+            if (refreshTimer) { clearTimeout(refreshTimer); refreshTimer = null; }
+        }
+
+        function attachPauseOnInputs() {
+            const zones = [document.querySelector('.reserve'), document.querySelector('.filters')];
+            zones.forEach(zone => {
+                if (!zone) return;
+                zone.addEventListener('focusin', () => { userInteracting = true; });
+                zone.addEventListener('focusout', () => {
+                    const active = document.activeElement;
+                    if (!zone.contains(active)) userInteracting = false;
+                });
+                zone.addEventListener('keydown', () => { userInteracting = true; });
+            });
+        }
+        function showEmptyRow(message = 'No hay resultados') {
+            const tb = document.querySelector('#tbl tbody');
+            const hasDataRows = tb.querySelector('tr[data-id]');
+            const add = () => {
+                if (!tb.querySelector('.empty-row') && !tb.querySelector('tr[data-id]')) {
+                    const tr = document.createElement('tr');
+                    tr.classList.add('empty-row');
+                    tr.innerHTML = `<td class="empty" colspan="5">${message}</td>`;
+                    tb.appendChild(tr);
+                }
+            };
+            if (hasDataRows) {
+                setTimeout(add, 260);
+            } else {
+                add();
+            }
+        }
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) { stopSilentAutoRefresh(); }
+            else { manualSearch(); startSilentAutoRefresh(); }
+        });
+        window.addEventListener('beforeunload', stopSilentAutoRefresh);
+        async function reserve() {
+            clearErrors();
+
+            const roomId = parseInt(document.getElementById('roomId').value);
+            const date = document.getElementById('date').value;
+            const start = document.getElementById('start').value;
+            const end = document.getElementById('end').value;
+            const purpose = document.getElementById('purpose').value.trim();
+
+            let hasErr = false;
+            if (!roomId) { document.getElementById('err-roomId').textContent = 'Obligatorio.'; hasErr = true; }
+            if (!date) { document.getElementById('err-date').textContent = 'Obligatorio.'; hasErr = true; }
+            if (!start) { document.getElementById('err-start').textContent = 'Obligatorio.'; hasErr = true; }
+            if (!end) { document.getElementById('err-end').textContent = 'Obligatorio.'; hasErr = true; }
+            if (!purpose) { document.getElementById('err-purpose').textContent = 'Obligatorio.'; hasErr = true; }
+
+            if (!hasErr && start && end && start >= end) {
+                document.getElementById('err-end').textContent = 'Fin debe ser mayor que inicio.';
+                hasErr = true;
+            }
+            if (hasErr) return;
+
+            userInteracting = true;
+            stopSilentAutoRefresh();
+            setLoading(true);
+
+            try {
+                const body = { roomId, date, startTime: start, endTime: end, purpose };
+                await apiPost(api.bookings, body);
+
+                showToast('Reserva creada', 'success');
+                document.getElementById('roomId').value = '';
+                document.getElementById('date').value = '';
+                document.getElementById('start').value = '';
+                document.getElementById('end').value = '';
+                document.getElementById('purpose').value = '';
+
+                await loadRoomsSilent();
+            } catch (err) {
+                showToast(err?.error || 'Error al reservar', 'error');
+            } finally {
+                setLoading(false);
+                userInteracting = false;
+                startSilentAutoRefresh();
+            }
+        }
+
+        (async () => {
+            const t = getToken();
+            if (!t) return location.href = 'login.html';
+            try {
+                const me = await apiGet(api.me);
+                if (me.role !== 'User') return location.href = 'user.html';
+            } catch (e) {
+                console.error('ME failed', e);
+                return location.href = 'login.html';
+            }
+
+            attachPauseOnInputs();
+            await loadRoomsSilent();
+            startSilentAutoRefresh();
+        })();
+    </script>
+</body>
+</html>
